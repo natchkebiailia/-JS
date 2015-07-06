@@ -130,7 +130,25 @@ Array.prototype.unique = function() {
             a.push(this[i]);
     return a;
 }
-
+Array.prototype.first = function() {
+	return this[0];
+}
+//HTMLElements
+HTMLElement.prototype.show = function(ms) {
+	this.style.opacity = 1;
+	this.style.display = "";
+	return this;
+}
+HTMLElement.prototype.hide = function(ms) {
+	//there is a bug while hide and show again, timer does not stop, but I don't need that right now 
+	var that = this;
+	ms = (ms !== undefined) ? ms : 777;
+	this.style.opacity = 0;
+	µ.delay(function(){
+		that.style.display = "none";
+	},ms);
+	return this;
+}
 HTMLElement.prototype.canDrag = function() {
 	this.ondragstart = function() { return false; };
 	this.onmousedown=function(event){
@@ -139,6 +157,7 @@ HTMLElement.prototype.canDrag = function() {
 	document.body.onmouseup=function() {
 		µ.draggable.stopDragging();
 	}
+	return this;
 }
 
 µ.draggable = function(){
@@ -174,5 +193,9 @@ HTMLElement.prototype.canDrag = function() {
                         document.onmousemove = function(){}
                     },
                 }
-            }();
+}();
+
+µ.delay = function(evt,ms){
+	return window.setTimeout(evt,ms);
+}
 }.call(this))
