@@ -122,6 +122,59 @@ String.prototype.equals = Number.prototype.equals =function(value){
 		return true;
 	return false;
 }
+String.prototype.toDec=Number.prototype.toDec = function(){
+	if (isNaN(this))
+		return this.romanToDec();
+	else if(this.match(/^[0-1]+$/)!= null)
+		return parseInt(this, 2);
+	return parseInt(this,10)
+}
+String.prototype.base=Number.prototype.base = function(n){
+	n = n || 2;
+	return this.toString(n);
+}
+String.prototype.toRoman=Number.prototype.toRoman = function(){
+	var roman="";
+	var number=parseInt(this,10);
+	if (0 >= number || number > 3888)
+		return roman;
+	var numbers=[{num:1000,rom:"M"},{num:900,rom:"CM"},{num:500,rom:"D"},{num:400,rom:"CD"},{num:100,rom:"C"},{num:90,rom:"XC"},{num:50,rom:"L"},{num:40,rom:"XL"},{num:10,rom:"X"},{num:9,rom:"IX"},{num:5,rom:"V"},{num:4,rom:"IV"},{num:1,rom:"I"}];
+
+	while(number){
+		for(var i=0;i<numbers.length;i++)
+			if(numbers[i].num<=number){
+				number-=numbers[i].num;
+				roman+=numbers[i].rom;
+				break;
+			}
+	}
+	return roman;
+}
+String.prototype.romanToDec=Number.prototype.romanToDec = function(){
+	var n={"M":1000,"D":500,"C":100,"L":50,"X":10,"V":5,"I":1};
+	var ans=0;
+	var str=this.toUpperCase();
+	if(str.match(/^[C,D,I,L,M,V,X]+$/) == null)
+		return Number.NaN
+	ans+=n[str[str.length-1]];
+	for(var i=str.length-2;i>=0;i--)
+		if(n[str[i]]>=n[str[i+1]])
+			ans+=n[str[i]];
+		else
+			ans-=n[str[i]];
+	if (ans.toRoman().toString() == this.toString().toUpperCase())
+		return ans;
+	return Number.NaN
+}
+//Math object extension, radian/degree conversations
+Math.radians = function(degrees) {
+  return degrees * Math.PI / 180;
+};
+ 
+Math.degrees = function(radians) {
+  return radians * 180 / Math.PI;
+};
+
 //Array prototypes
 Array.prototype.unique = function() {
     var a = [];
