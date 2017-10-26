@@ -104,7 +104,23 @@ Object.prototype.isEmpty = function (){
 		return (Object.getOwnPropertyNames(this).length === 0);
 	return (this.toString().length > 0) ? false:true;
 }
-//String prototypes
+Object.prototype.isUndefined = function(p){
+	if(typeof p === 'string') {
+		var split = p.split(".");
+		var prevObj = this;
+		for(var i = 0; i < split.length; i++) {
+			if(!prevObj[split[i]]) {
+				return true;
+			}
+			prevObj = prevObj[split[i]];
+		}
+		return false;
+	} else {
+		return false;
+	}
+};
+
+//String prototype
 String.prototype.firstChar = function(){
 	return this.charAt(0);
 }
